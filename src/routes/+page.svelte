@@ -3,23 +3,29 @@
   import { ParentContext } from "$lib/parent-context.svelte";
 
   const parentContext = new ParentContext();
-  const childContext = new ChildContext(parentContext.set2);
+  const childContext = new ChildContext(parentContext.set, parentContext.derivedSet);
 
-  $inspect('set 1 on page', parentContext.set1);
-  $inspect('set 2 on page', parentContext.set2);
-  $inspect('set 3 on page', childContext.set3);
+  $inspect('parent set on page', parentContext.set);
+  $inspect('parent derived set on page', parentContext.derivedSet);
+  $inspect('child set watcher on page', childContext.setWatcher);
+  $inspect('child derived set watcher on page', childContext.derivedWatcher);
 </script>
 
 <button onclick={() => parentContext.addItem()}>Increment</button>
 
-<h1>Set 1 (Parent)</h1>
-{@render setItems(parentContext.set1)}
+<h1>Parent</h1>
+<h2>Primary Set</h2>
+{@render setItems(parentContext.set)}
+<h2>Derived Set</h2>
+{@render setItems(parentContext.derivedSet)}
 
-<h1>Set 2 (Parent)</h1>
-{@render setItems(parentContext.set2)}
 
-<h1>Set 3 (Child)</h1>
-{@render setItems(childContext.set3)}
+<h1>Child</h1>
+<h2>Primary Set Watcher</h2>
+{@render setItems(childContext.setWatcher)}
+<h2>Derived Set Watcher</h2>
+{@render setItems(childContext.derivedWatcher)}
+
 
 {#snippet setItems(set: Set<number>)}
   <ul>

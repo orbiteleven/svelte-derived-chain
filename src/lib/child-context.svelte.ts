@@ -1,11 +1,13 @@
 import { SvelteSet } from "svelte/reactivity";
 
 export class ChildContext {
-  set3 = new SvelteSet<number>();
+  // This seems to work fine
+  setWatcher = new SvelteSet<number>();
+  // This does not work
+  derivedWatcher = new SvelteSet<number>();
 
-  constructor(parentSet: Set<number>) {
-    // The parent set should come over as
-    this.set3 = new SvelteSet(parentSet);
-    $inspect("set 3 in child", this.set3);
+  constructor(set: SvelteSet<number>, derivedSet: SvelteSet<number>) {
+    this.setWatcher = set;
+    this.derivedWatcher = derivedSet;
   }
 }
